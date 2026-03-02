@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 
-export default function handler(req, res) {
+module.exports = function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -21,9 +21,10 @@ export default function handler(req, res) {
 
   const secret = process.env.BOLD_SECRET_KEY;
   const currency = 'COP';
-  const orderId = `parkly-${userId}-${amount}`;
+  const timestamp = Date.now();
+  const orderId = `parkly-${userId}-${amount}-${timestamp}`;
   const raw = `${orderId}${amount}${currency}${secret}`;
   const hash = crypto.createHash('sha256').update(raw).digest('hex');
 
   return res.status(200).json({ orderId, hash });
-}
+};
