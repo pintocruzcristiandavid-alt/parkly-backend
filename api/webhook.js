@@ -27,7 +27,7 @@ module.exports = async function handler(req, res) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           order_id: orderId,
-          amount: amount,
+          amount: String(amount),
           status: 'approved'
         })
       });
