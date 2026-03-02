@@ -22,7 +22,7 @@ module.exports = async function handler(req, res) {
     }
 
     if (type === 'SALE_APPROVED') {
-      await fetch(`https://parkly.website/api/1.1/wf/bold-webhook`, {
+      await fetch(`https://parkly.website/version-test/api/1.1/wf/bold-webhook`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
