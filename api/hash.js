@@ -13,7 +13,7 @@ module.exports = function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { userId, amount } = req.body;
+  const { userId, amount, tipo } = req.body;
 
   if (!userId || !amount) {
     return res.status(400).json({ error: 'Faltan parámetros' });
@@ -22,7 +22,8 @@ module.exports = function handler(req, res) {
   const secret = process.env.BOLD_SECRET_KEY;
   const currency = 'COP';
   const timestamp = Date.now();
-  const orderId = `parkly-${userId}-${amount}-${timestamp}`;
+  const prefix = tipo === 'suscripcion' ? 'suscripcion' : 'recarga';
+  const orderId = `parkly-${prefix}-${userId}-${amount}-${timestamp}`;
   const raw = `${orderId}${amount}${currency}${secret}`;
   const hash = crypto.createHash('sha256').update(raw).digest('hex');
 
