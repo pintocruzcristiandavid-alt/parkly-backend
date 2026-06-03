@@ -22,9 +22,9 @@ module.exports = function handler(req, res) {
   const secret = process.env.BOLD_SECRET_KEY;
   const currency = 'COP';
   const timestamp = Date.now();
-  const prefix = tipo === 'suscripcion' ? 'suscripcion' : 'recarga';
-  const cleanUserId = userId.replace(/[^a-zA-Z0-9]/g, '');
-  const orderId = `parkly-${prefix}-${cleanUserId}-${amount}-${timestamp}`;
+  const prefix = tipo === 'suscripcion' ? 'sub' : 'rec';
+  const shortUserId = crypto.createHash('md5').update(userId).digest('hex').substring(0, 8);
+  const orderId = `parkly-${prefix}-${shortUserId}-${amount}-${timestamp}`;
   const raw = `${orderId}${amount}${currency}${secret}`;
   const hash = crypto.createHash('sha256').update(raw).digest('hex');
 
