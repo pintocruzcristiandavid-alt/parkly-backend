@@ -22,20 +22,12 @@ module.exports = async function handler(req, res) {
     }
 
     if (type === 'SALE_APPROVED') {
-      await fetch(`https://parkly.website/api/1.1/wf/bold-webhook`, {
+      const isSuscripcion = orderId.includes('-sub-');
+      const endpoint = isSuscripcion
+        ? 'https://parkly.website/version-test/api/1.1/wf/bold-webhook-suscripcion'
+        : 'https://parkly.website/version-test/api/1.1/wf/bold-webhook';
+
+      await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          order_id: orderId,
-          amount: String(amount),
-          status: 'approved'
-        })
-      });
-    }
-
-    return res.status(200).json({ success: true });
-
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-};
+        body: JSO
