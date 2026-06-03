@@ -19,6 +19,8 @@ module.exports = async function handler(req, res) {
     const orderId = body.data?.metadata?.reference;
     const amount = body.data?.amount?.total;
 
+    console.log('Webhook recibido:', { type, orderId, amount });
+
     if (!orderId || !amount) {
       res.status(400).json({ error: 'Faltan datos' });
       return;
@@ -30,7 +32,9 @@ module.exports = async function handler(req, res) {
         ? 'https://parkly.website/version-test/api/1.1/wf/bold-webhook-suscripcion'
         : 'https://parkly.website/version-test/api/1.1/wf/bold-webhook';
 
-      await fetch(endpoint, {
+      console.log('Llamando a endpoint:', endpoint);
+
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -39,11 +43,15 @@ module.exports = async function handler(req, res) {
           status: 'approved'
         })
       });
+
+      const responseData = await response.json();
+      console.log('Respuesta de Bubble:', responseData);
     }
 
     res.status(200).json({ success: true });
 
   } catch (error) {
+    console.log('Error:', error.message);
     res.status(500).json({ error: error.message });
   }
 };
