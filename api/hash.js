@@ -23,7 +23,8 @@ module.exports = function handler(req, res) {
   const currency = 'COP';
   const timestamp = Date.now();
   const prefix = tipo === 'suscripcion' ? 'suscripcion' : 'recarga';
-  const orderId = `parkly-${prefix}-${userId}-${amount}-${timestamp}`;
+  const cleanUserId = userId.replace(/[^a-zA-Z0-9]/g, '');
+  const orderId = `parkly-${prefix}-${cleanUserId}-${amount}-${timestamp}`;
   const raw = `${orderId}${amount}${currency}${secret}`;
   const hash = crypto.createHash('sha256').update(raw).digest('hex');
 
